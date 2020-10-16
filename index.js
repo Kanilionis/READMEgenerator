@@ -2,9 +2,76 @@
 // GIVEN a command-line application that accepts user input
 // WHEN I am prompted for information about my application repository
 // THEN a quality, professional README.md is generated with the title of your project and sections entitled Description, Table of Contents, Installation, Usage, License, Contributing, Tests, and Questions
+
+// module.exports = generateMarkdown;
+
+// // function to initialize program
+// function init() {
+// }
+// // function call to initialize program
+// init();
+
 var inquirer = require("inquirer");
 const fs = require("fs");
 const axios = require("axios");
+const { url } = require("inspector");
+
+// function generateREADME(data){
+// return `
+// # ${title}
+// #### ${description}
+// # ${toc}
+// ## ${installation}
+// ## ${usage}
+// ## ${license}
+// ## ${contributing}
+// ## ${tests}
+// ## ${questions}
+// `
+// }
+const licenses = [
+  {
+  name: "GNU AGPLv3",
+  badge: "[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)]",
+  url: "(https://www.gnu.org/licenses/agpl-3.0)"
+  },
+  {
+  name: "GNU GPLv3",
+  badge: "[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)]",
+  url: "(https://www.gnu.org/licenses/gpl-3.0)"
+  },
+  {
+  name: "GNU LGPLv3",
+  badge: "[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)]",
+  url: "(https://www.gnu.org/licenses/lgpl-3.0)"
+  },
+  {
+  name: "Mozilla Public License 2.0",
+  badge: "[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)]",
+  url: "(https://opensource.org/licenses/MPL-2.0)"
+  },
+  {
+  name: "Apache License 2.0",
+  badge: "[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)]",
+  url: "(https://opensource.org/licenses/Apache-2.0)"
+  },
+  {
+  name: "MIT License",
+  badge: "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)]",
+  url: "(https://opensource.org/licenses/MIT)"
+  },
+  {
+  name: "Boost Software License 1.0",
+  badge: "[![License](https://img.shields.io/badge/License-Boost%201.0-lightblue.svg)]",
+  url: "(https://www.boost.org/LICENSE_1_0.txt)"
+  },
+  {
+  name: "The Unilicense",
+  badge: "[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)]",
+  url: "(http://unlicense.org/)"
+  },
+]
+
 // const questions = 
 
 inquirer.prompt([
@@ -20,41 +87,37 @@ inquirer.prompt([
   },
   {
     type: "input",
-    message: "What would you like to include in your table of contents?",
+    message: "What would you like to include in your table of contents? Separate each using commas.",
     name: "toc",
   },
-  // {
-  //   type: "input",
-  //   message: "What would you like your title to be?",
-  //   name: "title",
-  // },
-  // {
-  //   type: "input",
-  //   message: "What would you like your title to be?",
-  //   name: "title",
-  // },
-  // {
-  //   type: "input",
-  //   message: "What would you like your title to be?",
-  //   name: "title",
-  // },
-  // {
-  //   type: "input",
-  //   message: "What would you like your title to be?",
-  //   name: "title",
-  // },
- ] )
-.then(function(response){
-  console.log(response);
-  var textForFile = "# " + response.name + "\n";
-  var fs = require("fs");
-  fs.writeFile("README.md", textForFile, function(error){
-      if(error){
-          return console.log(error)
-      }
-      console.log("file written");
+  {
+    type: "list",
+    message: "Which license would you like to use?",
+    name: "license",
+    choices: licenses
+  }] 
+  ).then(function(response){
+      console.log(response);
+    var tocJSON = JSON.stringify(response.toc);
+      console.log(tocJSON)
+    var toc = [];
+  // if(response.toc !== null){
+  //   toc.push(response.toc);
+  //   console.log(toc)
+  // }
+    var textForFile = "# " + response.title + "\n";
+    var fs = require("fs");
+      textForFile = textForFile + "### description: " + response.description + "\n";
+      textForFile = textForFile + "## table of contents: " + "<li>" + JSON.parse(tocJSON) + "\n";
+    var licenseBadge = response.licenses;
+    textForFile = textForFile + licenseBadge
+    fs.writeFile("READMEgen.md", textForFile, function(error){
+        if(error){
+            return console.log(error)
+        }
+    })
 
-})
+
 //   
 // questions.forEach()
 // // loop (forEach) through each array in the object
@@ -65,15 +128,8 @@ inquirer.prompt([
 // var title = ""
 // textForFile = "# " + title;
 // ## for h2 - second largest font
-textForFile = textForFile + "# " + response.title + "\n";
-textForFile = textForFile + "### description: " + response.description + "\n";
-textForFile = textForFile + "## table of contents: " + "<li>" + response.toc;
-fs.writeFile("README.md", "\n" + textForFile, function(error){
-  if(error){
-      return console.log(error)
-  }
-  console.log("description written");
-})
+
+
 })
 
 // ## for Table of Contents header
@@ -171,7 +227,12 @@ fs.writeFile("README.md", "\n" + textForFile, function(error){
 // WHEN I enter a description, installation instructions, usage information, contribution guidelines, and test instructions
 // THEN this information is added to the sections of the README entitled Description, Installation, Usage, Contributing, and Tests
 
+
+
 // WHEN I choose a license for my application from a list of options
+
+  
+
 // THEN a badge for that license is added hear the top of the README and a notice is added to the section of the README entitled License that explains which license the application is covered under
 
 // WHEN I enter my GitHub username
