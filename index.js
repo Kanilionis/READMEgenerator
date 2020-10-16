@@ -16,61 +16,94 @@ const fs = require("fs");
 const axios = require("axios");
 const { url } = require("inspector");
 
-// function generateREADME(data){
-// return `
-// # ${title}
-// #### ${description}
-// # ${toc}
-// ## ${installation}
-// ## ${usage}
-// ## ${license}
-// ## ${contributing}
-// ## ${tests}
-// ## ${questions}
-// `
-// }
+// function to generate markdown for README
+
+// module.exports = generateMarkdown;
+
+// hard code the table of contents here
+// ![Installation](installation)
+function renderLicenseBadge(license){
+  return `
+  ![GitHub license](https://img.shields.io/badge/License-${license}-blue.svg)
+  `
+}
+// ${renderLicenseBadge(response.license)}
+
+
+
+function writeREADME(response){
+return `
+${generateLicense(response.license)}
+# ${response.title}
+#### ${response.description}
+# ${response.toc}
+## ${response.installation}
+## ${response.usage}
+## ${response.license}
+## ${response.contributing}
+## ${response.tests}
+## ${response.questions}
+`
+}
+
+
+
 const licenses = [
   {
-  name: "GNU AGPLv3",
-  badge: "[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)]",
+  name: "GNUAGPLv3",
+  badge: "![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)",
   url: "(https://www.gnu.org/licenses/agpl-3.0)"
   },
   {
-  name: "GNU GPLv3",
-  badge: "[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)]",
+  name: "GNUGPLv3",
+  badge: "![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)",
   url: "(https://www.gnu.org/licenses/gpl-3.0)"
   },
   {
-  name: "GNU LGPLv3",
-  badge: "[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)]",
+  name: "GNULGPLv3",
+  badge: "![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)",
   url: "(https://www.gnu.org/licenses/lgpl-3.0)"
   },
   {
-  name: "Mozilla Public License 2.0",
-  badge: "[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)]",
+  name: "MPL2.0",
+  badge: "![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)",
   url: "(https://opensource.org/licenses/MPL-2.0)"
   },
   {
   name: "Apache License 2.0",
-  badge: "[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)]",
+  badge: "![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)",
   url: "(https://opensource.org/licenses/Apache-2.0)"
   },
   {
   name: "MIT License",
-  badge: "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)]",
+  badge: "![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)",
   url: "(https://opensource.org/licenses/MIT)"
   },
   {
   name: "Boost Software License 1.0",
-  badge: "[![License](https://img.shields.io/badge/License-Boost%201.0-lightblue.svg)]",
+  badge: "![License](https://img.shields.io/badge/License-Boost%201.0-lightblue.svg)",
   url: "(https://www.boost.org/LICENSE_1_0.txt)"
   },
   {
   name: "The Unilicense",
-  badge: "[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)]",
+  badge: "![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)",
   url: "(http://unlicense.org/)"
   },
 ]
+
+function generateLicense(licenseAnswer){
+  console.log(licenseAnswer)
+  const arrayLic = []
+licenses.map(function(license, i){
+  arrayLic.push(license)
+  console.log(i)
+  if (licenseAnswer === arrayLic.name[7]){
+    // console.log(license.badge[7])
+    return arrayLic.badge[7]
+  }
+})
+}
+
 
 // const questions = 
 
@@ -98,37 +131,25 @@ inquirer.prompt([
   }] 
   ).then(function(response){
       console.log(response);
-    var tocJSON = JSON.stringify(response.toc);
-      console.log(tocJSON)
-    var toc = [];
+    // var tocJSON = JSON.stringify(response.toc);
+    //   console.log(tocJSON)
+  //   var toc = [];
   // if(response.toc !== null){
   //   toc.push(response.toc);
   //   console.log(toc)
   // }
-    var textForFile = "# " + response.title + "\n";
-    var fs = require("fs");
-      textForFile = textForFile + "### description: " + response.description + "\n";
-      textForFile = textForFile + "## table of contents: " + "<li>" + JSON.parse(tocJSON) + "\n";
-    var licenseBadge = response.licenses;
-    textForFile = textForFile + licenseBadge
-    fs.writeFile("READMEgen.md", textForFile, function(error){
+    // var textForFile = "# " + response.title + "\n";
+    // var fs = require("fs");
+    //   textForFile = textForFile + "### description: " + response.description + "\n";
+    //   textForFile = textForFile + "## table of contents: " + "<li>" + JSON.parse(tocJSON) + "\n";
+      
+    // var licenseBadge = response.license;
+    // textForFile = textForFile + licenseBadge
+    fs.writeFile("READMEgen.md", writeREADME(response), function(error){
         if(error){
             return console.log(error)
         }
     })
-
-
-//   
-// questions.forEach()
-// // loop (forEach) through each array in the object
-// // then writeFile to README using input value
-// );
-
-// use # (similar to h1) - largest font
-// var title = ""
-// textForFile = "# " + title;
-// ## for h2 - second largest font
-
 
 })
 
@@ -150,7 +171,6 @@ inquirer.prompt([
 // ];
 // textForFile = "## " + tableOfContents
 // textForFile = "* [" + tableOfContents.name + "](#" + tableOfContents.link + ")" 
-// start table of contents with Installation (## for all)
 // steps required to install project (provide step-by-step description of how to get the development environment running) - add gif of process if necessary
 // var installation = ""
 // // instructions for use, include screenshots and gif of process
@@ -201,25 +221,6 @@ inquirer.prompt([
 //       })
 //     })
 //   })
-
-
-// inquirer.prompt([
-//     {
-//     type: "input",
-//     message: "What is the title of your README file?",
-//     name: "title"
-//     },
-//     {
-//     type: "input",
-//     message: "What would you like to put in your description?",
-//     name: "description"
-//     },
-//     {
-//     type: "list",
-//     message: "Enter your table of contents.",
-//     name: "contents",
-//     }
-// ])
 
 // WHEN I enter my project title
 // THEN this is displayed as the title of the README
