@@ -1,13 +1,10 @@
 
   
-  ![GitHub license](https://img.shields.io/badge/License-GNUAGPLv3-blue.svg)
+  ![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)
   
-  
-  # This is My Title
+  # Employee Directory
   ## Description
-  #### This is my descriptions
-  
-
+  #### As an HR Manager, I am able to view all of my employees, sort by first name, last name, ID and occupation, delete employees, search by first name, last name, occupation, and ID to return the employee I would ike to reference.
   # Table of Contents
    * [Installation](#installation)
    * [Usage](#usage)
@@ -15,30 +12,16 @@
    * [Contributors](#contributors)
    * [Tests](#tests)
    * [Questions](#questions)
-  
-
-  
-
   ## Installation
-  #### npm install
-  
-
+  #### react, bootstrap
   ## Usage
   #### undefined
-  
-
   ## License
-  #### This project is licensed under the GNUAGPLv3 license.
-  
-
+  #### This project is licensed under the MIT license.
   ## Contributing
-  #### just me
-  
-
+  #### 
   ## Test
-  #### no thanks
-  
-
+  #### 
   ## Questions
   #### Email: <a>kanilionis@gmail.com</a>
   #### GitHub: <a>github.com/kanilionis</a>
